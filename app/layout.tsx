@@ -1,32 +1,10 @@
-// import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
-// import { Header } from '@/components/Header/Header';
-// import { Footer } from '@/components/Footer/Footer';
-// import './globals.css';
-
-// export default function RootLayout({ children, modal, }: { children: React.ReactNode;
-//   modal: React.ReactNode; }) {
-//   return (
-//     <html lang="uk">
-//       <body>
-//         <TanStackProvider>
-//           <Header />
-//           <main>
-//             {children}
-//             {modal}
-//           </main>
-//           <Footer />
-//         </TanStackProvider>
-//       </body>
-//     </html>
-//   );
-// }
-
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import { Header } from '@/components/Header/Header';
 import { Footer } from '@/components/Footer/Footer';
 import './globals.css';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
 
 const roboto = Roboto({
   weight: ['400', '500', '700'],
@@ -67,12 +45,14 @@ export default function RootLayout({
     <html lang="uk" className={roboto.variable}>
       <body className={roboto.className}>
         <TanStackProvider>
-          <Header />
+          <AuthProvider>
+            <Header />
           <main>
             {children}
             {modal}
           </main>
           <Footer />
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>
