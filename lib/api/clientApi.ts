@@ -1,6 +1,6 @@
 import { api } from './api';
 import { Note, User } from '@/types/note'; 
-import { NoteTag } from '@/lib/api';
+import { NoteTag } from '@/lib/api/api';
 
 interface RegisterData {
   email: string;
