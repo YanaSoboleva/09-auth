@@ -60,7 +60,7 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { cookies } from 'next/headers'; 
 import NotesClient from './Notes.client';
-import { fetchNotes, NoteTag } from '@/lib/api'; 
+import { fetchNotes, NoteTag } from '@/lib/api/api'; 
 import { Metadata } from 'next';
 
 interface FilterPageProps {
