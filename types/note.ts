@@ -1,4 +1,4 @@
-import { NoteTag } from '@/lib/api';
+import { NoteTag } from '@/lib/api/api';
 import 'react';
 
 export interface Note {

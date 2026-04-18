@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { NoteTag } from '@/lib/api';
+import { NoteTag } from '@/lib/api/api';
 
 interface NoteDraft {
   title: string;
