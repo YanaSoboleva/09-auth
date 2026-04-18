@@ -1,0 +1,178 @@
+// 'use client';
+
+// import { useState, useEffect } from 'react';
+// import Link from 'next/link';
+// import { useQuery, keepPreviousData } from '@tanstack/react-query';
+// import { fetchNotes } from '@/lib/api';
+// import { NoteList } from '@/components/NoteList/NoteList';
+// import SearchBox from '@/components/SearchBox/SearchBox';
+// import Pagination from '@/components/Pagination/Pagination';
+// import css from './Notes.client.module.css';
+// import { NoteTag } from '@/lib/api';
+
+// interface NotesClientProps {
+//   initialTag?: NoteTag;
+// }
+
+// export default function NotesClient({ initialTag }: NotesClientProps) {
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [searchQuery, setSearchQuery] = useState('');
+//   const [debouncedSearch, setDebouncedSearch] = useState('');
+
+//   const perPage = 10;
+  
+//   useEffect(() => {
+//     const handler = setTimeout(() => {
+//       setDebouncedSearch(searchQuery);
+//       setCurrentPage(1);
+//     }, 500);
+
+//     return () => clearTimeout(handler);
+//   }, [searchQuery]);
+
+//   const { data, isLoading, isError } = useQuery({
+//     queryKey: ['notes', debouncedSearch, currentPage, initialTag],
+//     queryFn: () => fetchNotes({
+//       page: currentPage,
+//       perPage,
+//       search: debouncedSearch,
+//       tag: initialTag
+//     }),
+//     placeholderData: keepPreviousData,
+//   });
+
+//   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setSearchQuery(e.target.value);
+//   };
+
+//   const handlePageChange = (page: number) => {
+//     setCurrentPage(page);
+//     window.scrollTo({ top: 0, behavior: 'smooth' });
+//   };
+
+//   return (
+//     <main className={css.container}>
+//       <div className={css.controls}>
+//         <SearchBox onChange={handleSearchChange} />
+        
+//         <Link
+//           href="/notes/action/create"
+//           className={css.addBtn}
+//         >
+//           Add New Note
+//         </Link>
+//       </div>
+
+//       {isLoading && <div className={css.status}>Loading notes...</div>}
+      
+//       {isError && (
+//         <div className={css.error}>Error loading notes. Please try again.</div>
+//       )}
+
+//       {data && (
+//         <>
+//           <NoteList notes={data.notes} />
+          
+//           {data.totalPages > 1 && (
+//             <Pagination
+//               pageCount={data.totalPages}
+//               onPageChange={(selected) => handlePageChange(selected + 1)}
+//               forcePage={currentPage - 1}
+//             />
+//           )}
+//         </>
+//       )}
+//     </main>
+//   );
+// }
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { fetchNotes } from '@/lib/api';
+import { NoteList } from '@/components/NoteList/NoteList';
+import SearchBox from '@/components/SearchBox/SearchBox';
+import Pagination from '@/components/Pagination/Pagination';
+import css from './Notes.client.module.css';
+import { NoteTag } from '@/lib/api';
+
+interface NotesClientProps {
+  tag?: NoteTag;
+}
+
+export default function NotesClient({ tag }: NotesClientProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  const perPage = 10;
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setCurrentPage(1);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['notes', debouncedSearch, currentPage, tag],
+    queryFn: () => fetchNotes({ 
+      page: currentPage, 
+      perPage, 
+      search: debouncedSearch,
+      tag: tag 
+    }),
+    placeholderData: keepPreviousData, 
+  });
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+  };
+
+  return (
+    <main className={css.container}>
+      <div className={css.controls}>
+        <SearchBox value={searchQuery} onChange={handleSearchChange} />
+        
+        <Link 
+          href="/notes/action/create" 
+          className={css.addBtn}
+        >
+          Add New Note
+        </Link>
+      </div>
+
+      {isLoading && <div className={css.status}>Loading notes...</div>}
+      
+      {isError && (
+        <div className={css.error}>Error loading notes. Please try again.</div>
+      )}
+
+      {data && (
+        <div key={tag || 'all'}>
+          {data.notes.length > 0 ? (
+            <NoteList notes={data.notes} />
+          ) : (
+            <div className={css.emptyStatus}>No notes found for this category.</div>
+          )}
+          
+          {data.totalPages > 1 && (
+            <Pagination
+              pageCount={data.totalPages}
+              onPageChange={(selected) => handlePageChange(selected + 1)}
+              forcePage={currentPage - 1}
+            />
+          )}
+        </div>
+      )}
+    </main>
+  );
+}
