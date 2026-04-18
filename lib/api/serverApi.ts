@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { api } from './api';
 import { Note, User } from '@/types/note';
-import { NoteTag } from '@/lib/api';
+import { NoteTag } from '@/lib/api/api';
 
 const getAuthHeaders = async () => {
   const cookieStore = await cookies();
