@@ -30,6 +30,7 @@ export default function SignInPage() {
     router.push('/profile');
 
   } catch (err: any) {
+  console.error('Login failed:', err);
     setError('Invalid email or password');
   } finally {
     setIsLoading(false);
