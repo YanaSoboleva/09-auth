@@ -14,7 +14,7 @@ export interface User {
   id: string;
   username: string;
   email: string;
-  avatarUrl?: string;
+  avatar: string;
 }
 
 declare module 'react' {

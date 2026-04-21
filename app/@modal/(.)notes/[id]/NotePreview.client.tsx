@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { fetchNoteById } from '@/lib/api/api';
+import { fetchNoteById } from '@/lib/api/clientApi';
 import Modal from '@/components/Modal/Modal'; 
-import css from './NoteDetails.client.module.css';
+import css from './NotePreview.module.css';
 
 interface NoteDetailsClientProps {
   id: string; 
@@ -36,13 +36,22 @@ export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
   return (
     
     <Modal onClose={handleClose}>
-      {isLoading && <div className={css.loader}>Завантаження...</div>}
+      <div className={css.modalContent}>
+        <button 
+          onClick={handleClose} 
+          className={css.closeButton}
+          aria-label="Закрити модальне вікно"
+        >
+          &times;
+        </button>
 
-      {isError && (
-        <div className={css.error}>
-          <p>Нотатку не знайдено</p>
-        </div>
-      )}
+        {isLoading && <div className={css.loader}>Loading...</div>}
+
+        {isError && (
+          <div className={css.error}>
+            <p>Notation not found</p>
+          </div>
+        )}
 
       {note && (
         <article className={css.container}>
@@ -66,7 +75,8 @@ export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
             </footer>
           )}
         </article>
-      )}
+        )}
+        </div>
     </Modal>
   );
 }

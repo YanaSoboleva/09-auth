@@ -8,7 +8,8 @@ import css from './AuthNavigation.module.css';
 
 export default function AuthNavigation() {
   const router = useRouter();
-  const { isAuthenticated, clearIsAuthenticated } = useAuthStore();
+
+  const { isAuthenticated, user, clearIsAuthenticated } = useAuthStore();
   const handleLogout = async () => {
     try {
       await logout();
@@ -25,6 +26,9 @@ export default function AuthNavigation() {
     <nav className={css.nav}>
       {isAuthenticated ? (
         <div className={css.authGroup}>
+          <span className={css.userInfo}>
+            Hello, <strong>{user?.email || user?.email || 'Користувач'}</strong>
+          </span>
           <Link href="/profile" className={css.link}>
             Profile
           </Link>
