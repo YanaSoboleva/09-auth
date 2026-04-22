@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NoteHub — Розумне керування вашими нотатками',
     description: 'Організовуйте свої ідеї та завдання швидко та ефективно за допомогою NoteHub.',
-    url: 'https://notehub-yana.vercel.app', // Замініть на ваш реальний URL після деплою
+    url: 'https://notehub-yana.vercel.app',
     siteName: 'NoteHub',
     images: [
       {

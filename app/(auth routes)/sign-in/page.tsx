@@ -5,10 +5,8 @@ import { useRouter } from 'next/navigation';
 import { login } from '@/lib/api/clientApi';
 import css from './SignInPage.module.css';
 import { useAuthStore } from '@/lib/store/authStore';
-// import { User } from '@/types/user';
 
 export default function SignInPage() {
-  // const setUser = useAuthStore((state) => state.setUser);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();

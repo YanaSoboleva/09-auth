@@ -27,7 +27,7 @@ export default function AuthNavigation() {
       {isAuthenticated ? (
         <div className={css.authGroup}>
           <span className={css.userInfo}>
-            Hello, <strong>{user?.email || user?.email || 'Користувач'}</strong>
+            Hello, <strong>{user?.username || user?.email || 'User'}</strong>
           </span>
           <Link href="/profile" className={css.link}>
             Profile

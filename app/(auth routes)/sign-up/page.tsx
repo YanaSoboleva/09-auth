@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { register } from '@/lib/api/clientApi';
 import css from './SignUpPage.module.css';
-
 import { useAuthStore } from '@/lib/store/authStore';
 import { checkSession } from '@/lib/api/clientApi';
 
@@ -38,20 +37,6 @@ export default function SignUpPage() {
       setIsLoading(false);
     }
     };
-    
-//     try {
-//     // 1. Чекаємо на успішну відповідь від сервера
-//     await register({ email, password });
-
-//     // 2. Жорсткий редірект для оновлення сесії
-//     window.location.href = '/profile';
-    
-//   } catch (err: any) {
-//     setError(err.response?.data?.message || 'Error during registration');
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };
     return (
       <main className={css.mainContent}>
         <h1 className={css.formTitle}>Sign up</h1>

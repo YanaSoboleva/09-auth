@@ -1,23 +1,3 @@
-// import axios from 'axios';
-// import Cookies from 'js-cookie';
-
-// const baseURL = process.env.NEXT_PUBLIC_API_URL + '/api';
-
-// export const api = axios.create({
-//   baseURL, 
-//   withCredentials: true,
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-// });
-
-// api.interceptors.request.use((config) => {
-//   const token = Cookies.get('accessToken'); // Назва з вашого middleware
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`; // Це "ключ", який відкриє нотатки
-//   }
-//   return config;
-// });
 import axios, { AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 import { Note } from '@/types/note';
@@ -52,38 +32,16 @@ export const api = axios.create({
   },
 });
 
-// export const fetchNotes = async ({
-//   page = 1,
-//   perPage = 10,
-//   search = '',
-//   tag = 'all',
-// }: FetchParams = {}): Promise<FetchNotesResponse> => {
-//   const params: Record<string, string | number> = { page, perPage };
-
-//   if (search.trim()) {
-//     params.search = search;
-//   }
-
-//   if (tag && tag !== 'all') {
-//     params.tag = tag;
-//   }
-
-//   const response = await api.get<FetchNotesResponse>('/notes', { params });
-//   return response.data;
-// };
-
 api.interceptors.request.use((config) => {
-  const token = Cookies.get('accessToken'); // Назва має збігатися з вашим middleware
+  const token = Cookies.get('accessToken'); 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
-
-// 3. Оновлена функція fetchNotes, яка приймає другий аргумент config
 export const fetchNotes = async (
   { search = '', page = 1, perPage = 12, tag = 'all' } = {},
-  config: AxiosRequestConfig = {} // ДОДАНО: приймає заголовки з сервера
+  config: AxiosRequestConfig = {} 
 ) => {
   const params = {
     search: search.trim(),
@@ -91,8 +49,6 @@ export const fetchNotes = async (
     perPage,
     tag: tag !== 'all' ? tag : undefined,
   };
-
-  // Передаємо config у запит, щоб додати Authorization: Bearer
   const response = await api.get('/notes', { 
     params, 
     ...config 
@@ -100,8 +56,6 @@ export const fetchNotes = async (
   
   return response.data;
 };
-
-// 4. Інші методи (приклад для отримання однієї нотатки)
 export const fetchNoteById = async (id: string, config: AxiosRequestConfig = {}) => {
   const response = await api.get(`/notes/${id}`, config);
   return response.data;
