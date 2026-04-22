@@ -1,7 +1,8 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { cookies } from 'next/headers'; 
+// import { cookies } from 'next/headers'; 
 import NotesClient from './Notes.client';
-import { fetchNotes, NoteTag } from '@/lib/api/api'; 
+import { NoteTag } from '@/lib/api/api'; 
+import { fetchNotes} from '@/lib/api/serverApi'; 
 import { Metadata } from 'next';
 
 interface FilterPageProps {
@@ -44,20 +45,34 @@ export default async function FilteredNotesPage({ params }: FilterPageProps) {
   const tagParam = (resolvedParams.slug?.[0] as NoteTag) || 'all';
   const activeTag = tagParam === 'all' ? undefined : tagParam;
 
-  const queryClient = new QueryClient();
-  const cookieStore = await cookies();
-  const token = cookieStore.get('accessToken')?.value;
+//   const queryClient = new QueryClient();
+//   const cookieStore = await cookies();
+//   const token = cookieStore.get('accessToken')?.value;
+//   await queryClient.prefetchQuery({
+//     queryKey: ['notes', activeTag],
+//     queryFn: () =>
+//       fetchNotes(
+//         { tag: activeTag },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`
+//           }
+//         }
+//       ),
+//   });
+
+//   return (
+//     <HydrationBoundary state={dehydrate(queryClient)}>
+//       <NotesClient key={tagParam} tag={activeTag} />
+//     </HydrationBoundary>
+//   );
+// }
+const queryClient = new QueryClient();
+
   await queryClient.prefetchQuery({
     queryKey: ['notes', activeTag],
-    queryFn: () => 
-      fetchNotes(
-        { tag: activeTag }, 
-        { 
-          headers: { 
-            Authorization: `Bearer ${token}`
-          } 
-        }
-      ),
+    // ВИПРАВЛЕНО: передаємо лише один об'єкт з параметрами
+    queryFn: () => fetchNotes({ tag: activeTag }),
   });
 
   return (
